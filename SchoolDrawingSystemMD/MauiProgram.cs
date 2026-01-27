@@ -1,4 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using Mopups.Hosting;
+using SchoolDrawingSystemMD.Services;
+using SchoolDrawingSystemMD.ViewModels;
 
 namespace SchoolDrawingSystemMD
 {
@@ -9,6 +12,7 @@ namespace SchoolDrawingSystemMD
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .ConfigureMopups()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -18,6 +22,14 @@ namespace SchoolDrawingSystemMD
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+
+            builder.Services.AddSingleton<TxtFileServices>();
+
+            builder.Services.AddTransient<DrawingSystemViewModel>();
+            builder.Services.AddTransient<SchoolClassFormViewModel>();
+            builder.Services.AddTransient<StudentFormViewModel>();
+
+            builder.Services.AddTransient<Views.DrawPage>();
 
             return builder.Build();
         }

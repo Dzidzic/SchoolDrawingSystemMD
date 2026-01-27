@@ -22,8 +22,7 @@ namespace SchoolDrawingSystemMD.Services
                 File.Create(_schoolClassesfilePath).Close();
         }
 
-
-        public async Task<AllSchoolClasses> LoadData()
+        public async Task<ObservableCollection<SchoolClass>> LoadData()
         {
             EnsureFileExists();
             var studentsTask = LoadStudents();
@@ -34,8 +33,6 @@ namespace SchoolDrawingSystemMD.Services
             var studentsDictionary = await studentsTask;
             var schoolClasses = await classesTask;
 
-            AllSchoolClasses allData = new() { SchoolClasses = schoolClasses };
-
             var classLookup = schoolClasses.ToDictionary(c => c.Id);
             foreach (var studentEntry in studentsDictionary)
             {
@@ -44,15 +41,11 @@ namespace SchoolDrawingSystemMD.Services
 
                 if (classLookup.TryGetValue(schoolClassId, out var targetClass))
                     targetClass.Students.Add(student);
-                else
-                {
-                    // Tutaj obsłużysz "błędne id", o których wspomniałeś
-                    // np. zaloguj informację: Console.WriteLine($"Nie znaleziono klasy {schoolClassId}");
-                }
             }
 
-            return allData;
+            return schoolClasses;
         }
+
         private async Task<Dictionary<Student, Guid>> LoadStudents()
         {
             string[] lines = await File.ReadAllLinesAsync(_studentsFilePath);
@@ -101,15 +94,13 @@ namespace SchoolDrawingSystemMD.Services
 
             return schoolClasses;
         }
-
-
-        public async Task SaveData(AllSchoolClasses allSchoolClasses)
+        public async Task SaveData(ObservableCollection<SchoolClass> allSchoolClasses)
         {
             EnsureFileExists();
             var schoolClassesDictionary = new Dictionary<Guid, string>();
             var studentsDictionary = new Dictionary<Student, Guid>();
 
-            foreach (var schoolClass in allSchoolClasses.SchoolClasses)
+            foreach (var schoolClass in allSchoolClasses)
             {
                 schoolClassesDictionary[schoolClass.Id] = schoolClass.Name;           
                 var students = schoolClass.Students;
@@ -123,6 +114,7 @@ namespace SchoolDrawingSystemMD.Services
 
             await Task.WhenAll(studentsTask, classesTask);
         }
+
         private async Task SaveStudents(Dictionary<Student, Guid> studentsDictionary)
         {
             var lines = studentsDictionary.Select(keyValuePair =>
@@ -135,31 +127,12 @@ namespace SchoolDrawingSystemMD.Services
 
             await File.WriteAllLinesAsync(_studentsFilePath, lines, Encoding.UTF8);
         }
+
         private async Task SaveSchoolClasses(Dictionary<Guid, string> schoolClasses)
         {
             var lines = schoolClasses.Select(keyValuePair => $"{keyValuePair.Key}|{keyValuePair.Value}");
 
             await File.WriteAllLinesAsync(_schoolClassesfilePath, lines, Encoding.UTF8);
-        }
-
-
-        public Task UpdateSchoolClass(SchoolClass schoolClass)
-        {
-            throw new NotImplementedException();
-        }
-        public Task DeleteSchoolClass(Guid schoolClassId)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public Task UpdateStudent(Student student)
-        {
-            throw new NotImplementedException();
-        }
-        public Task DeleteStudent(Guid studentClassId)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+    xmlns:viewModels="clr-namespace:SchoolDrawingSystemMD.ViewModels"
+    x:Class="SchoolDrawingSystemMD.Views.Popups.SchoolClassForm"
+    x:DataType="viewModels:SchoolClassFormViewModel"
+    x:Name="SchoolClassFormPopup"
+    BackgroundColor="#80000000">
+
+    <Border Background="Black"
+            WidthRequest="300"
+            HeightRequest="500"
+            Margin="20">
+        <VerticalStackLayout>
+            <Label x:Name="FormTitle"
+                   Text="Dodaj nową klasę" />
+
+            <Entry x:Name="NameEntry"
+                   Placeholder="Nazwa kategorii"
+                   Text="{Binding ClassInfo.Name}"/>
+
+            <Button x:Name="FormButton"
+                    Text="Dodaj"
+                    Command="{Binding HandleSubmitBtnCommand}"/>
+        </VerticalStackLayout>
+    </Border>
+</mopups:PopupPage>

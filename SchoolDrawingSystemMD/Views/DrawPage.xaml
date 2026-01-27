@@ -2,12 +2,61 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:SchoolDrawingSystemMD.ViewModels"
-             xmlns:controls="clr-namespace:SchoolDrawingSystemMD.Views.Controls"
+             xmlns:models="clr-namespace:SchoolDrawingSystemMD.Models"
              x:Class="SchoolDrawingSystemMD.Views.DrawPage"
+             x:Name="SchoolDrawingSystemPage"
              x:DataType="viewModels:DrawingSystemViewModel"
              Title="DrawPage">
-    <VerticalStackLayout>
-        <Label Text="DrawPage"/>
-        <controls:SchoolClassControl />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout>
+            <Label Text="Wylosowana liczba: "/>
+            <Label Text="{Binding DrawedNumber}"/>
+            <Button Text="Losuj"
+                    Command="{Binding DrawStudentCommand}"/>
+
+            <Picker ItemsSource="{Binding AllSchoolClasses}"
+                    ItemDisplayBinding="{Binding Name}"
+                    SelectedItem="{Binding SelectedClass}"
+                    Title="Wybierz klasę" />
+            
+            <Button Text="Edytuj klasę" 
+                    Command="{Binding EditSchoolClassCommand}"
+                    CommandParameter="{Binding SelectedClass}"/>
+
+            <Button Text="Usuń klasę" 
+                    Command="{Binding DeleteSchoolClassCommand}"
+                    CommandParameter="{Binding SelectedClass}"/>
+            
+            <Button Text="Dodaj nową klasę"
+                    Command="{Binding AddNewSchoolClassCommand}"/>
+
+            <Label Text="{Binding SelectedClass.Name}" />
+            <CollectionView ItemsSource="{Binding SelectedClass.Students}">
+                <CollectionView.Header>
+                    <Button Text="Dodaj ucznia"
+                            Command="{Binding AddNewStudentCommand}"/>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Student">
+                        <Border>
+                            <HorizontalStackLayout>
+                                <Label Text="{Binding FirstName}" />
+                                <Label Text="{Binding LastName}" />
+                                <CheckBox IsChecked="{Binding IsPresent}"/>
+                                <Label Text="{Binding DrawCooldown}" />
+                                
+                                <Button Text="Edytuj"
+                                        Command="{Binding Source={x:Reference SchoolDrawingSystemPage}, Path=BindingContext.EditStudentCommand}"
+                                        CommandParameter="{Binding .}"/>
+                                
+                                <Button Text="Usuń"
+                                        Command="{Binding Source={x:Reference SchoolDrawingSystemPage}, Path=BindingContext.DeleteStudentCommand}"
+                                        CommandParameter="{Binding .}"/>
+                            </HorizontalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
