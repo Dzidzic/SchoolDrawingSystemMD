@@ -1,0 +1,171 @@
+﻿shell, contentpage {
+    -maui-shell-backgroundcolor: #121212;
+    -maui-shell-titlecolor: snow;
+    -maui-shell-tabbar-background: #121212;
+    -maui-shell-tabbar-title: snow;
+}
+
+#pageTitle {
+    background-color: #121212;
+    color: snow;
+    font-size: 24;
+    font-style: bold;
+    padding-left: 15;
+}
+
+contentpage, ^contentpage {
+    background-color: #121212;
+    font-family: serif;
+}
+
+border {
+    border-radius: 10;
+}
+
+picker {
+    margin: 10 0;
+}
+
+#mainGrid {
+    column-gap: 20;
+    padding: 20;
+    margin: 20;
+}
+
+#pickerBox {
+    column-gap: 4;
+}
+
+.iconBtn {
+    background-color: transparent;
+    border-width: .5; 
+    border-radius: 6; 
+    width: 20;
+    height: 20;
+    font-size: 20;
+    padding: 0;
+}
+
+.editBtn {
+    border-color: #FFB300;
+    color: #FFB300;
+}
+
+.deleteBtn {
+    border-color: #FF5252;
+    color: #FF5252;
+    font-size: 30;
+}
+
+.addBtn {
+    border-color: #4CAF50;
+    color: #4CAF50;
+    font-size: 30;
+}
+
+.primaryBtn {
+    font-size: 13;
+    font-style: bold;
+    background-color: snow;
+}
+
+#classHeader {
+    margin: 20 30 10 30;
+}
+
+    #classHeader label {
+        font-size: 26;
+        font-style: bold;
+    }
+
+#studentsList {
+    background-color: #1C1C1C;
+    border-width: 0;
+    padding: 2;
+    margin: 0 40;
+}
+
+    #studentsList .iconBtn {
+        border-color: transparent;
+        border-width: 0;
+    }
+
+.studentRow {
+    background-color: transparent;
+    padding-left: 5;
+    padding-right: 5;
+}
+
+    .studentRow checkbox {
+        color: lightblue;
+    }
+
+    .studentRow label, checkbox {
+        margin-left: 5;
+    }
+
+    .studentRow>label {
+        margin-right: 5;
+        padding-left: 15;
+        padding-right: 15;
+        background-color: #212121;
+        font-size: 16;
+    }
+
+.studentNumber {
+    font-style: bold;
+    font-size: 18;
+}
+
+#leftSide {
+    margin-top: 15;
+}
+
+#luckyNumber {
+    margin-bottom: 10;
+}
+
+    #luckyNumber>label {
+        margin-right: 5;
+        font-size: 18;
+        font-style: bold;
+    }
+
+    #luckyNumber>button {
+        margin-left: 10;
+        height: 30;
+    }
+
+#drawCard {
+    width: 350;
+    padding: 0 30 30 30;
+    background-color: #1C1C1C;
+    border-color: Gray;
+    border-width: 0.5;
+}
+
+    #drawCard button {
+        font-size: 16;
+    }
+
+#numberBorder {
+    background-color: #2B2B2B;
+    border-color: Snow;
+    border-width: 2;
+    height: 100;
+    width: 100;
+    -maui-shadow: 0 0 10 LightSteelBlue 0.5;
+    margin-top: 30;
+}
+
+    #numberBorder>label {
+        font-size: 40;
+        font-style: bold;
+        color: white;
+    }
+
+#drawedStudent {
+    margin: 15 0;
+    font-size: 17;
+    font-style: bold;
+}

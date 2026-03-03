@@ -17,7 +17,7 @@ public partial class StudentForm : PopupPage
         if (BindingContext is StudentFormViewModel vm)
         {
             vm.SetStudent(existingStudent);
-            FormTitle.SetValue(Label.TextProperty, "Edytuj Ucznia");
+            FormTitle.SetValue(Label.TextProperty, "EDYTJ UCZNIA");
             FormButton.SetValue(Button.TextProperty, "Zapisz");
         }
     }

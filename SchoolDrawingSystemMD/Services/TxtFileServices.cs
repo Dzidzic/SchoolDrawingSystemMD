@@ -40,7 +40,10 @@ namespace SchoolDrawingSystemMD.Services
                 var schoolClassId = studentEntry.Value;
 
                 if (classLookup.TryGetValue(schoolClassId, out var targetClass))
+                {
+                    student.StudentNumber = targetClass.Students.Count() + 1;
                     targetClass.Students.Add(student);
+                }             
             }
 
             return schoolClasses;
@@ -59,6 +62,7 @@ namespace SchoolDrawingSystemMD.Services
                 var student = new Student
                 {
                     Id = Guid.Parse(studentData[0].Trim()),
+                    StudentNumber = -1,
                     FirstName = studentData[1].Trim(),
                     LastName = studentData[2].Trim(),
                     IsPresent = bool.Parse(studentData[3].Trim()),

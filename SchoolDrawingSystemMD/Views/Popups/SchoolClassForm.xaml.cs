@@ -17,7 +17,7 @@ public partial class SchoolClassForm : PopupPage
         if (BindingContext is SchoolClassFormViewModel vm)
         {
             vm.SetSchoolClass(existingSchoolClass);
-            FormTitle.SetValue(Label.TextProperty, "Edytuj klasê");
+            FormTitle.SetValue(Label.TextProperty, "EDYTUJ KLASÊ");
             FormButton.SetValue(Button.TextProperty, "Zapisz");
         }
     }

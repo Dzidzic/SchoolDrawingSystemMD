@@ -5,58 +5,201 @@
              xmlns:models="clr-namespace:SchoolDrawingSystemMD.Models"
              x:Class="SchoolDrawingSystemMD.Views.DrawPage"
              x:Name="SchoolDrawingSystemPage"
-             x:DataType="viewModels:DrawingSystemViewModel"
-             Title="DrawPage">
-    <ScrollView>
-        <VerticalStackLayout>
-            <Label Text="Wylosowana liczba: "/>
-            <Label Text="{Binding DrawedNumber}"/>
-            <Button Text="Losuj"
-                    Command="{Binding DrawStudentCommand}"/>
+             x:DataType="viewModels:DrawingSystemViewModel">
 
-            <Picker ItemsSource="{Binding AllSchoolClasses}"
-                    ItemDisplayBinding="{Binding Name}"
-                    SelectedItem="{Binding SelectedClass}"
-                    Title="Wybierz klasę" />
-            
-            <Button Text="Edytuj klasę" 
-                    Command="{Binding EditSchoolClassCommand}"
-                    CommandParameter="{Binding SelectedClass}"/>
+    <Shell.TitleView >
+        <Label Text='System Losowania Uczniów "SDS"'
+               x:Name="pageTitle"
+               VerticalTextAlignment="Center"
+               HorizontalTextAlignment="Center"/>
+    </Shell.TitleView>
 
-            <Button Text="Usuń klasę" 
-                    Command="{Binding DeleteSchoolClassCommand}"
-                    CommandParameter="{Binding SelectedClass}"/>
-            
-            <Button Text="Dodaj nową klasę"
-                    Command="{Binding AddNewSchoolClassCommand}"/>
+    <Grid ColumnDefinitions="2*, 3*" x:Name="mainGrid">
+        <Grid Grid.Column="0" RowDefinitions="Auto, *" x:Name="leftSide">
+            <HorizontalStackLayout x:Name="luckyNumber" Grid.Row="0" VerticalOptions="Center">
+                <Label Text="Szczęśliwy Numerek:"
+                       VerticalTextAlignment="Center" />
+                
+                <Label Text="{Binding LuckyNumber}"
+                       VerticalTextAlignment="Center" />
+                
+                <Button Text="Losuj nowy"
+                        StyleClass="primaryBtn"
+                        VerticalOptions="Center"
+                        Command="{Binding DrawLuckyNumberCommand}"/>
+            </HorizontalStackLayout>
 
-            <Label Text="{Binding SelectedClass.Name}" />
-            <CollectionView ItemsSource="{Binding SelectedClass.Students}">
-                <CollectionView.Header>
-                    <Button Text="Dodaj ucznia"
-                            Command="{Binding AddNewStudentCommand}"/>
-                </CollectionView.Header>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Student">
-                        <Border>
-                            <HorizontalStackLayout>
-                                <Label Text="{Binding FirstName}" />
-                                <Label Text="{Binding LastName}" />
-                                <CheckBox IsChecked="{Binding IsPresent}"/>
-                                <Label Text="{Binding DrawCooldown}" />
-                                
-                                <Button Text="Edytuj"
+            <Border x:Name="drawCard" Grid.Row="1" VerticalOptions="Center">
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Border x:Name="numberBorder" HorizontalOptions="Center">
+                        <Label x:Name="resultLabel"
+                               Text="?"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+                    
+                    <Label x:Name="drawedStudent"
+                           Text=""
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+                    <Button Text="LOSUJ UCZNIA"
+                            Command="{Binding DrawStudentCommand}"
+                            StyleClass="primaryBtn" />
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Column="1" RowDefinitions="Auto, Auto, *" x:Name="rightSide">
+            <Grid x:Name="pickerBox" Grid.Row="0" ColumnDefinitions="*, Auto, Auto, Auto" VerticalOptions="Center">
+   
+                <Picker ItemsSource="{Binding AllSchoolClasses}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding SelectedClass}"
+                        Title="Wybierz klasę" 
+                        Grid.Column="0" />
+
+                <Button Grid.Column="1" Text="✎" 
+                        Command="{Binding EditSchoolClassCommand}"
+                        CommandParameter="{Binding SelectedClass}"
+                        StyleClass="iconBtn, editBtn">
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroupList>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="#FFEAB8" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </VisualStateManager.VisualStateGroups>
+                </Button>
+
+                <Button Grid.Column="2" Text="×" 
+                        Command="{Binding DeleteSchoolClassCommand}"
+                        CommandParameter="{Binding SelectedClass}"
+                        StyleClass="iconBtn, deleteBtn">
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroupList>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="#FFB8B8" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </VisualStateManager.VisualStateGroups>
+                </Button>
+
+                <Button Grid.Column="3" Text="+" 
+                        Command="{Binding AddNewSchoolClassCommand}"
+                        StyleClass="iconBtn, addBtn">
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroupList>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="#CDE9CE" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </VisualStateManager.VisualStateGroups>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="1" ColumnDefinitions="*, Auto" x:Name="classHeader">
+                <Label Grid.Column="0" Text="{Binding SelectedClass.Name}"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"/>
+                <Button Grid.Column="1" Text="Dodaj ucznia" 
+                        StyleClass="primaryBtn"
+                        Command="{Binding AddNewStudentCommand}"/>
+            </Grid>
+
+            <Border Grid.Row="2" x:Name="studentsList" >
+                <CollectionView ItemsSource="{Binding SelectedClass.Students}"
+                                SelectionMode="None"
+                                ItemsUpdatingScrollMode="KeepScrollOffset" >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Student">
+                            <Grid ColumnDefinitions="*, Auto, Auto, Auto" 
+                                  StyleClass="studentRow">
+                                <HorizontalStackLayout Grid.Column="0" 
+                                                       VerticalOptions="Center"
+                                                       StyleClass="studentFullName">
+                                    <HorizontalStackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                            Command="{Binding Source={x:Reference SchoolDrawingSystemPage}, Path=BindingContext.ChangeStudentPresenceCommand}"
+                                            CommandParameter="{Binding .}" />
+                                    </HorizontalStackLayout.GestureRecognizers>
+                                    
+                                    <Label Text="{Binding StudentNumber, StringFormat='{0}.'}"
+                                           StyleClass="studentNumber"
+                                           VerticalTextAlignment="Center" />
+                                    
+                                    <CheckBox IsChecked="{Binding IsPresent}" 
+                                              VerticalOptions="Center"
+                                              InputTransparent="True" />
+                                    
+                                    <Label Text="{Binding FirstName}" 
+                                           VerticalTextAlignment="Center" />
+                                    
+                                    <Label Text="{Binding LastName}" 
+                                           VerticalTextAlignment="Center" />
+                                </HorizontalStackLayout>
+
+                                <Label Grid.Column="1" 
+                                       Text="{Binding DrawCooldown, StringFormat='⌛{0}'}" 
+                                       VerticalTextAlignment="Center" />
+
+                                <Button Grid.Column="2" Text="✎" 
                                         Command="{Binding Source={x:Reference SchoolDrawingSystemPage}, Path=BindingContext.EditStudentCommand}"
-                                        CommandParameter="{Binding .}"/>
-                                
-                                <Button Text="Usuń"
+                                        CommandParameter="{Binding .}"
+                                        StyleClass="iconBtn, editBtn"
+                                        VerticalOptions="Center" >
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroupList>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="PointerOver">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="Scale" Value="1.3" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateGroupList>
+                                    </VisualStateManager.VisualStateGroups>
+                                </Button>
+
+                                <Button Grid.Column="3" Text="×" 
                                         Command="{Binding Source={x:Reference SchoolDrawingSystemPage}, Path=BindingContext.DeleteStudentCommand}"
-                                        CommandParameter="{Binding .}"/>
-                            </HorizontalStackLayout>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
-    </ScrollView>
+                                        CommandParameter="{Binding .}"
+                                        StyleClass="iconBtn, deleteBtn"
+                                        VerticalOptions="Center" >
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroupList>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="PointerOver">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="Scale" Value="1.3" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateGroupList>
+                                    </VisualStateManager.VisualStateGroups>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Border>
+        </Grid>
+    </Grid>
 </ContentPage>
